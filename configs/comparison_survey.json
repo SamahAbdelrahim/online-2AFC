@@ -1,0 +1,18 @@
+{
+  "pair_mode": "fixed",
+  "trial_count": 1,
+  "shuffle_trials": false,
+  "allow_repeat_pairs": false,
+  "fixed_pairs": [
+    {
+      "left": "models/car2.glb",
+      "right": "models/datsun240k.fbx"
+    }
+  ],
+  "model_sources": [
+    "models",
+    "glb",
+    "stl"
+  ],
+  "prompt": "Which object looks more complex?"
+}

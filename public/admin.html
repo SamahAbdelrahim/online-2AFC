@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Study Admin: Shape Bias</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/human-experiment/experiment.css" />
+    <link rel="stylesheet" href="/human-experiment/admin.css" />
+    <link rel="icon" href="/human-experiment/favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/human-experiment/admin.js"></script>
+  </head>
+  <body class="sb-admin">
+    <main class="sb-admin-shell">
+      <header class="sb-admin-header">
+        <div class="sb-admin-header-row">
+          <div>
+            <h1 class="sb-page-title">Study Admin</h1>
+            <p class="sb-admin-lead">
+              Choose which 3D files to compare. Save below updates the main site, or create a custom link for a one-off setup.
+            </p>
+          </div>
+          <div class="sb-admin-user" id="sb-admin-user" hidden>
+            <span id="sb-admin-user-email" class="sb-admin-user-email"></span>
+            <button type="button" class="sb-admin-btn sb-admin-btn--secondary" id="sb-admin-logout">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <form id="sb-admin-form" class="sb-admin-form" novalidate>
+        <section class="sb-admin-card">
+          <h2 class="sb-admin-card-title">Pairing Mode</h2>
+          <div class="sb-admin-radio-row">
+            <label class="sb-admin-radio">
+              <input type="radio" name="pair_mode" value="fixed" checked />
+              <span>Fixed pairs: pick exact A vs B comparisons</span>
+            </label>
+            <label class="sb-admin-radio">
+              <input type="radio" name="pair_mode" value="random" />
+              <span>Random pairs: sample from a model pool</span>
+            </label>
+          </div>
+        </section>
+
+        <section id="sb-fixed-panel" class="sb-admin-card">
+          <div class="sb-admin-card-head">
+            <h2 class="sb-admin-card-title">Fixed Pairs</h2>
+            <button type="button" class="sb-admin-btn sb-admin-btn--secondary" id="sb-add-pair">
+              + Add Pair
+            </button>
+          </div>
+          <p class="sb-admin-hint">Each row is one trial. Object A and B may be swapped on screen.</p>
+          <div id="sb-pair-rows" class="sb-pair-rows"></div>
+        </section>
+
+        <section id="sb-random-panel" class="sb-admin-card sb-admin-card--hidden">
+          <h2 class="sb-admin-card-title">Random Pairing</h2>
+          <label class="sb-admin-field">
+            <span class="sb-admin-label">Number of Trials</span>
+            <input type="number" id="trial_count" name="trial_count" min="1" max="200" value="15" />
+          </label>
+          <label class="sb-admin-check">
+            <input type="checkbox" id="allow_repeat_pairs" name="allow_repeat_pairs" />
+            <span>Allow the same pair to appear more than once</span>
+          </label>
+          <p class="sb-admin-hint">Select which files can be drawn into random pairs. Leave all unchecked to use every file in the folders below.</p>
+          <div id="sb-model-pool" class="sb-model-pool"></div>
+        </section>
+
+        <section class="sb-admin-card">
+          <h2 class="sb-admin-card-title">Model Folders</h2>
+          <p class="sb-admin-hint">Only files in checked folders appear in the dropdowns.</p>
+          <div class="sb-admin-check-grid">
+            <label class="sb-admin-check">
+              <input type="checkbox" name="model_sources" value="models" checked />
+              <span><code>models/</code></span>
+            </label>
+            <label class="sb-admin-check">
+              <input type="checkbox" name="model_sources" value="glb" checked />
+              <span><code>glb/</code></span>
+            </label>
+            <label class="sb-admin-check">
+              <input type="checkbox" name="model_sources" value="stl" checked />
+              <span><code>stl/</code></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="sb-admin-card">
+          <h2 class="sb-admin-card-title">Other Settings</h2>
+          <label class="sb-admin-field">
+            <span class="sb-admin-label">Trial Prompt (Complexity Study Only)</span>
+            <input type="text" id="prompt" name="prompt" value="Which object looks more complex?" />
+          </label>
+          <label class="sb-admin-check sb-admin-check--last">
+            <input type="checkbox" id="shuffle_trials" name="shuffle_trials" checked />
+            <span>Shuffle Trial Order</span>
+          </label>
+        </section>
+
+        <section class="sb-admin-actions">
+          <button type="button" class="sb-admin-btn sb-admin-btn--secondary" id="sb-preview-btn">
+            Preview Trials
+          </button>
+          <button type="submit" class="sb-admin-btn sb-admin-btn--primary" id="sb-save-btn">
+            Save Configuration
+          </button>
+        </section>
+
+        <section class="sb-admin-feedback" aria-live="polite">
+          <p id="sb-admin-status" class="sb-admin-status" role="status"></p>
+          <pre id="sb-admin-preview" class="sb-admin-preview sb-admin-preview--hidden" aria-label="Trial preview"></pre>
+        </section>
+      </form>
+
+      <section class="sb-admin-card">
+        <h2 class="sb-admin-card-title">Custom Study Links</h2>
+        <p class="sb-admin-hint">
+          Create a private URL with its own model pairs and settings. This does not change the main site.
+        </p>
+
+        <label class="sb-admin-field">
+          <span class="sb-admin-label">Link Label</span>
+          <input type="text" id="custom-study-label" placeholder="e.g. Pilot with car models" />
+        </label>
+
+        <label class="sb-admin-field">
+          <span class="sb-admin-label">Study Type</span>
+          <select id="custom-study-variant">
+            <option value="complexity">Complexity Study</option>
+            <option value="online">Parent Online</option>
+            <option value="inperson">Children In Person</option>
+          </select>
+        </label>
+
+        <details class="sb-admin-details">
+          <summary class="sb-admin-details-summary">Optional Text Overrides</summary>
+          <div class="sb-admin-details-body">
+            <label class="sb-admin-field">
+              <span class="sb-admin-label">Trial Title</span>
+              <input type="text" id="custom-trial-title" placeholder="Leave blank to use the study default" />
+            </label>
+            <label class="sb-admin-field">
+              <span class="sb-admin-label">Trial Subtitle</span>
+              <input type="text" id="custom-trial-subtitle" placeholder="Leave blank to use the study default" />
+            </label>
+            <label class="sb-admin-field">
+              <span class="sb-admin-label">Choice Button A</span>
+              <input type="text" id="custom-choice-a" placeholder="Leave blank to use the study default" />
+            </label>
+            <label class="sb-admin-field">
+              <span class="sb-admin-label">Choice Button B</span>
+              <input type="text" id="custom-choice-b" placeholder="Leave blank to use the study default" />
+            </label>
+          </div>
+        </details>
+
+        <p class="sb-admin-hint">
+          Uses the pairing settings from the form above. Preview or adjust those settings, then create the link.
+        </p>
+
+        <button type="button" class="sb-admin-btn sb-admin-btn--primary" id="sb-create-custom-link">
+          Create Custom Link
+        </button>
+
+        <div class="sb-admin-custom-list-wrap">
+          <h3 class="sb-admin-subtitle">Active Links</h3>
+          <div id="sb-custom-study-list" class="sb-custom-study-list"></div>
+        </div>
+      </section>
+
+      <section class="sb-admin-card">
+        <h2 class="sb-admin-card-title">Launch Study</h2>
+        <p class="sb-admin-hint sb-admin-hint--launch">
+          Save your changes first, then open a study link to test the experiment.
+        </p>
+        <div class="sb-admin-launch-links">
+          <a class="sb-admin-launch-link" href="/">Complexity Study</a>
+          <a class="sb-admin-launch-link" href="/online">Parent Online</a>
+          <a class="sb-admin-launch-link" href="/inperson">Children In Person</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

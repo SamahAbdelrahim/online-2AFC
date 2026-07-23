@@ -1,0 +1,105 @@
+{
+  "studies": {
+    "agn5xnx": {
+      "slug": "agn5xnx",
+      "label": "Test",
+      "study_variant": "online",
+      "active": false,
+      "created_at": "2026-07-21T19:24:36.938Z",
+      "updated_at": "2026-07-21T20:11:11.547Z",
+      "comparison": {
+        "pair_mode": "fixed",
+        "trial_count": 1,
+        "shuffle_trials": false,
+        "allow_repeat_pairs": false,
+        "fixed_pairs": [
+          {
+            "left": "car2.glb",
+            "right": "datsun240k.fbx"
+          }
+        ],
+        "model_pool": [],
+        "model_sources": [
+          "models"
+        ],
+        "prompt": "Which object looks more complex?"
+      },
+      "copy_overrides": {
+        "trial_title": null,
+        "trial_subtitle": null,
+        "choice_button_a": null,
+        "choice_button_b": null,
+        "choice_prompt_locked": null,
+        "choice_prompt_unlocked": null
+      }
+    },
+    "ab6qsk3": {
+      "slug": "ab6qsk3",
+      "label": "Inactive UX Test",
+      "study_variant": "complexity",
+      "active": false,
+      "created_at": "2026-07-21T19:35:25.250Z",
+      "updated_at": "2026-07-21T19:35:25.260Z",
+      "comparison": {
+        "pair_mode": "fixed",
+        "trial_count": 15,
+        "shuffle_trials": true,
+        "allow_repeat_pairs": false,
+        "fixed_pairs": [
+          {
+            "left": "car2.glb",
+            "right": "datsun240k.fbx"
+          }
+        ],
+        "model_pool": [],
+        "model_sources": [
+          "models"
+        ],
+        "prompt": "Which object looks more complex?"
+      },
+      "copy_overrides": {
+        "trial_title": null,
+        "trial_subtitle": null,
+        "choice_button_a": null,
+        "choice_button_b": null,
+        "choice_prompt_locked": null,
+        "choice_prompt_unlocked": null
+      }
+    },
+    "akkgc4m": {
+      "slug": "akkgc4m",
+      "label": "Untitled Study",
+      "study_variant": "complexity",
+      "active": true,
+      "created_at": "2026-07-21T20:51:31.864Z",
+      "updated_at": "2026-07-21T20:51:31.864Z",
+      "comparison": {
+        "pair_mode": "fixed",
+        "trial_count": 1,
+        "shuffle_trials": false,
+        "allow_repeat_pairs": false,
+        "fixed_pairs": [
+          {
+            "left": "models/car2.glb",
+            "right": "models/datsun240k.fbx"
+          }
+        ],
+        "model_pool": [],
+        "model_sources": [
+          "models",
+          "glb",
+          "stl"
+        ],
+        "prompt": "Which object looks more complex?"
+      },
+      "copy_overrides": {
+        "trial_title": null,
+        "trial_subtitle": null,
+        "choice_button_a": null,
+        "choice_button_b": null,
+        "choice_prompt_locked": null,
+        "choice_prompt_unlocked": null
+      }
+    }
+  }
+}
