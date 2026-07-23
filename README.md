@@ -2,11 +2,9 @@
 
 Developing an online A 2AFC (two-alternative forced-choice) task to use with adults and children.
 
-A Prolific-ready jsPsych experiment where participants compare pairs of 3D objects and choose which looks more complex (or easier to draw, depending on study type).
+An experiment where participants compare pairs of 3D objects and choose which looks more complex (or easier to draw, depending on study type).
 
 ## Quick start (local preview)
-
-No MongoDB required.
 
 ```bash
 npm install
@@ -33,7 +31,7 @@ http://localhost:3041/?PROLIFIC_PID=debug&STUDY_ID=debug&SESSION_ID=debug
 
 ## Admin page (`/admin`)
 
-Use the admin page to configure trials without editing JSON by hand.
+Use the admin page to configure trials without editing JSON by hand or going into the repository.
 
 **Save Configuration** updates the main study links (`/`, `/online`, `/inperson`).
 
